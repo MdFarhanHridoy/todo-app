@@ -137,5 +137,56 @@ The following are excluded via `.gitignore` and will NOT be committed:
 - `dist/`, `build/`, `.next/` — build output
 - `.env`, `.env.local` — environment variables (contains secrets)
 - `coverage/` — test coverage reports
+- `.kilo/` — AI tool cache
+- `.vscode/`, `.idea/` — IDE settings
 
 > Never commit `.env` files or `node_modules/` to GitHub.
+
+---
+
+## How to Ignore a Folder in Git
+
+### 1. Add the folder to `.gitignore`
+
+Open the root `.gitignore` file and add a new line with the folder name followed by `/`:
+
+```
+# Category (optional comment)
+my-folder/
+```
+
+**Examples:**
+```
+logs/              # ignore logs folder everywhere
+build-output/      # ignore build output
+.secret-folder/    # ignore a dot folder
+```
+
+> **Tip:** Adding `/` at the end ensures only directories are matched, not files with the same name.
+
+### 2. If the folder is already tracked by Git
+
+Just adding it to `.gitignore` won't remove it from Git. You also need to untrack it:
+
+```bash
+git rm -r --cached <folder-name>
+```
+
+This removes the folder from Git's index **without deleting your local files**.
+
+### 3. Commit the changes
+
+```bash
+git add .gitignore
+git commit -m "chore: add <folder-name> to gitignore"
+git push
+```
+
+### Quick reference
+
+| Scenario | Command |
+|---|---|
+| Ignore a new folder | Add `folder/` to `.gitignore` |
+| Stop tracking an already-pushed folder | `git rm -r --cached folder/` then commit |
+| Check what's being ignored | `git status --ignored` |
+| Verify a specific file is ignored | `git check-ignore -v <file>` |
