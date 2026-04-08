@@ -19,16 +19,21 @@ export class AuthController {
     @Body() dto: RegisterDto,
     @Res({ passthrough: true }) res: any,
   ) {
-    const { user, token } = await this.authService.register(dto);
+    try {
+      const { user, token } = await this.authService.register(dto);
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
+      });
 
-    return { user };
+      return { user };
+    } catch (error) {
+      console.error('Register error:', error);
+      throw error;
+    }
   }
 
   @Post('login')
@@ -37,16 +42,21 @@ export class AuthController {
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) res: any,
   ) {
-    const { user, token } = await this.authService.login(dto);
+    try {
+      const { user, token } = await this.authService.login(dto);
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
+      });
 
-    return { user };
+      return { user };
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   }
 
   @Post('logout')
